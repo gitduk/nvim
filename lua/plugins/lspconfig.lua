@@ -104,9 +104,7 @@ return {
         --
         -- This may be unwanted, since they displace some of your code
         if client and client:supports_method('textDocument/inlayHint', event.buf) then
-          map('<leader>th', function()
-            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-          end, '[T]oggle Inlay [H]ints')
+          map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
         end
       end,
     })
@@ -144,6 +142,7 @@ return {
     vim.list_extend(ensure_installed, {
       'lua-language-server', -- Lua Language server
       'stylua', -- Used to format Lua code
+      'markdownlint', -- Used to lint Markdown files
       -- You can add other tools here that you want Mason to install
     })
 
@@ -160,12 +159,7 @@ return {
       on_init = function(client)
         if client.workspace_folders then
           local path = client.workspace_folders[1].name
-          if
-            path ~= vim.fn.stdpath 'config'
-            and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
-          then
-            return
-          end
+          if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
         end
 
         client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {

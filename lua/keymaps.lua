@@ -1,10 +1,3 @@
--- [[ Basic Keymaps ]]
---  See `:help vim.keymap.set()`
-
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
 -- Diagnostic Config & Keymaps
 -- See :help vim.diagnostic.Opts
 vim.diagnostic.config {
@@ -21,34 +14,78 @@ vim.diagnostic.config {
   jump = { float = true },
 }
 
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+-- [[ Basic Keymaps ]]
+--  See `:help vim.keymap.set()`
 
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- Clear highlights on search when pressing <Esc> in normal mode
+--  See `:help hlsearch`
+local map = vim.keymap.set
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Keybinds to make split navigation easier.
+map('i', 'jk', '<ESC>')
+
+-- buffer
+map('n', 'L', ':bn<cr>', { desc = 'Next buffer' })
+map('n', 'H', ':bp<cr>', { desc = 'Prev buffer' })
+
+map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+-- move lines
+map('n', '<S-j>', '<cmd>m .1<cr>==', { desc = 'Move down' })
+map('n', '<S-k>', '<cmd>m .-2<cr>==', { desc = 'Move up' })
+map('v', '<S-j>', ":m '>+1<cr>gv=gv", { desc = 'Move down' })
+map('v', '<S-k>', ":m '<-2<cr>gv=gv", { desc = 'Move up' })
+-- map("i", "<S-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
+-- map("i", "<S-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
+
 --  Use CTRL+<hjkl> to switch between windows
---
 --  See `:help wincmd` for a list of all window commands
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+map('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+map('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+map('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+map('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
--- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+-- quick delete
+map('i', '<C-h>', '<BS>', { desc = 'Backspace' })
+map('i', '<C-l>', '<DEL>', { desc = 'Delete' })
 
+-- redo
+map('n', 'U', ':redo<cr>', { desc = 'Redo' })
+
+-- clear search with <esc>
+map({ 'i', 'n' }, '<esc>', '<cmd>noh<cr><esc>', { desc = 'Escape and clear hlsearch' })
+
+-- better indenting
+map('v', '<', '<gv')
+map('v', '>', '>gv')
+map('v', 'H', '<gv')
+map('v', 'L', '>gv')
+map('v', 'q', '<esc>')
+
+-- copy
+map('v', 'Y', '"+yy', { desc = 'Copy to system clipboard' })
+
+-- quick header
+map('n', '<leader>k', function()
+  local line = vim.fn.getline '.'
+  local cs = vim.bo.commentstring or '# %s'
+  local comment_sym = vim.trim(cs:match '^(.-)%%s' or '#')
+
+  local pad = ' '
+  local side = comment_sym:rep(3) -- 三个注释符用于中间行包裹
+  local middle_content = side .. pad .. line .. pad .. side
+
+  -- 为了让边框长度与中间行一致，我们使用字符宽度计算而不是注释符重复次数
+  local total_width = vim.fn.strdisplaywidth(middle_content)
+  local border_unit = comment_sym:sub(1, 1) -- 只用单个字符来画边框（美观）
+  local border_line = border_unit:rep(total_width)
+
+  local lnum = vim.fn.line '.'
+  vim.fn.setline(lnum, border_line)
+  vim.fn.append(lnum, middle_content)
+  vim.fn.append(lnum + 1, border_line)
+
+  -- 可选：是否调用注释命令
+  -- vim.cmd(lnum .. "," .. (lnum + 2) .. "normal gcc")
+end, { desc = 'boxed comment header' })
