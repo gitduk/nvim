@@ -21,9 +21,9 @@ vim.diagnostic.config {
 --  See `:help hlsearch`
 local map = vim.keymap.set
 
-map('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
+-- normal
 map('i', 'jk', '<ESC>')
+map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- buffer
 map('n', 'L', ':bn<cr>', { desc = 'Next buffer' })
