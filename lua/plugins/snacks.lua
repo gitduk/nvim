@@ -13,6 +13,8 @@ return {
         enabled = true,
         timeout = 3000,
       },
+      picker = { enabled = true },
+      explorer = { enabled = true },
       quickfile = { enabled = true },
       scroll = { enabled = true },
       statuscolumn = { enabled = true },
@@ -24,6 +26,29 @@ return {
       },
     },
     keys = {
+      -- Top Pickers
+      { '<leader><leader>', function() Snacks.picker.buffers() end, desc = 'Buffers' },
+      { '<leader>/', function() Snacks.picker.grep_curr_buf() end, desc = 'Grep (Current Buffer)' },
+      { '<leader>sf', function() Snacks.picker.files() end, desc = 'Find Files' },
+      { '<leader>sg', function() Snacks.picker.grep() end, desc = 'Grep' },
+      { '<leader>s.', function() Snacks.picker.recent() end, desc = 'Recent' },
+      -- Search
+      { '<leader>sd', function() Snacks.picker.diagnostics() end, desc = 'Diagnostics' },
+      { '<leader>sh', function() Snacks.picker.help() end, desc = 'Help Tags' },
+      { '<leader>sk', function() Snacks.picker.keymaps() end, desc = 'Keymaps' },
+      { '<leader>ss', function() Snacks.picker.smart() end, desc = 'Smart Find' },
+      { '<leader>sw', function() Snacks.picker.grep_word() end, desc = 'Visual selection or word', mode = { 'n', 'x' } },
+      { '<leader>sc', function() Snacks.picker.commands() end, desc = 'Commands' },
+      { '<leader>sr', function() Snacks.picker.resume() end, desc = 'Resume' },
+      -- LSP
+      { 'grd', function() Snacks.picker.lsp_definitions() end, desc = 'Goto Definition' },
+      { 'grr', function() Snacks.picker.lsp_references() end, nowait = true, desc = 'References' },
+      { 'gri', function() Snacks.picker.lsp_implementations() end, desc = 'Goto Implementation' },
+      { 'grt', function() Snacks.picker.lsp_type_definitions() end, desc = 'Goto Type Definition' },
+      { 'gO', function() Snacks.picker.lsp_symbols() end, desc = 'Document Symbols' },
+      { 'gW', function() Snacks.picker.lsp_workspace_symbols() end, desc = 'Workspace Symbols' },
+      -- Other
+      { '<leader>e', function() Snacks.explorer() end, desc = 'File Explorer' },
       { '<leader>z', function() Snacks.zen() end, desc = 'Toggle Zen Mode' },
       { '<leader>Z', function() Snacks.zen.zoom() end, desc = 'Toggle Zoom' },
       { '<leader>.', function() Snacks.scratch() end, desc = 'Toggle Scratch Buffer' },
@@ -33,31 +58,8 @@ return {
       { '<leader>cR', function() Snacks.rename.rename_file() end, desc = 'Rename File' },
       { '<leader>gB', function() Snacks.gitbrowse() end, desc = 'Git Browse' },
       { '<leader>gb', function() Snacks.git.blame_line() end, desc = 'Git Blame Line' },
-      { '<leader>gf', function() Snacks.lazygit.log_file() end, desc = 'LazyGit Current File Log' },
       { '<leader>gg', function() Snacks.lazygit() end, desc = 'Lazygit' },
-      { '<leader>gl', function() Snacks.lazygit.log() end, desc = 'LazyGit Log' },
       { '<leader>un', function() Snacks.notifier.hide() end, desc = 'Dismiss All Notifications' },
-      { '<leader>d', function() Snacks.dashboard() end, desc = 'Dashboard' },
-      { ']]', function() Snacks.words.jump(vim.v.count1) end, desc = 'Next Reference', mode = { 'n', 't' } },
-      { '[[', function() Snacks.words.jump(-vim.v.count1) end, desc = 'Prev Reference', mode = { 'n', 't' } },
-      {
-        '<leader>N',
-        desc = 'Neovim News',
-        function()
-          Snacks.win {
-            file = vim.api.nvim_get_runtime_file('doc/news.txt', false)[1],
-            width = 0.6,
-            height = 0.6,
-            wo = {
-              spell = false,
-              wrap = false,
-              signcolumn = 'yes',
-              statuscolumn = ' ',
-              conceallevel = 3,
-            },
-          }
-        end,
-      },
     },
     init = function()
       vim.api.nvim_create_autocmd('User', {
@@ -82,3 +84,4 @@ return {
     end,
   },
 }
+
