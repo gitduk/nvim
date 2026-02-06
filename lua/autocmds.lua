@@ -8,7 +8,7 @@ local autocmd = vim.api.nvim_create_autocmd
 --  See `:help vim.hl.on_yank()`
 autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function() vim.hl.on_yank() end,
 })
 
@@ -28,5 +28,16 @@ autocmd('BufReadPost', {
     if line > 1 and line <= vim.fn.line '$' and vim.bo.filetype ~= 'commit' and vim.fn.index({ 'xxd', 'gitrebase' }, vim.bo.filetype) == -1 then
       vim.cmd 'normal! g`"'
     end
+  end,
+})
+
+-- Remove trailing whitespace on save
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = vim.api.nvim_create_augroup('trim-whitespace', { clear = true }),
+  pattern = '*',
+  callback = function()
+    local save = vim.fn.winsaveview()
+    vim.cmd [[%s/\s\+$//e]]
+    vim.fn.winrestview(save)
   end,
 })
