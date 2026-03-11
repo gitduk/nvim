@@ -23,7 +23,6 @@ local map = vim.keymap.set
 
 -- normal
 map('i', 'jk', '<ESC>')
-map('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- buffer
 map('n', 'L', ':bn<cr>', { desc = 'Next buffer' })
@@ -32,12 +31,10 @@ map('n', 'H', ':bp<cr>', { desc = 'Prev buffer' })
 map('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- move lines
-map('n', '<S-j>', '<cmd>m .1<cr>==', { desc = 'Move down' })
+map('n', '<S-j>', '<cmd>m .+1<cr>==', { desc = 'Move down' })
 map('n', '<S-k>', '<cmd>m .-2<cr>==', { desc = 'Move up' })
 map('v', '<S-j>', ":m '>+1<cr>gv=gv", { desc = 'Move down' })
 map('v', '<S-k>', ":m '<-2<cr>gv=gv", { desc = 'Move up' })
--- map("i", "<S-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "Move down" })
--- map("i", "<S-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "Move up" })
 
 --  Use CTRL+<hjkl> to switch between windows
 --  See `:help wincmd` for a list of all window commands
