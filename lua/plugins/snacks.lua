@@ -6,7 +6,7 @@ return {
     ---@type snacks.Config
     opts = {
       bigfile = { enabled = true },
-      dashboard = { enabled = true },
+      dashboard = { enabled = false }, -- Disabled to avoid setup warnings
       indent = { enabled = true },
       input = { enabled = true },
       notifier = {
