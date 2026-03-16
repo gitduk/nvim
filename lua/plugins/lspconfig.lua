@@ -184,8 +184,8 @@ return {
 			end,
 			settings = {
 				Lua = {},
+			},
 		})
-  },
 		vim.lsp.enable("lua_ls")
 	end,
 }
