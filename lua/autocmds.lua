@@ -54,20 +54,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Ensure file ends with a blank line
-vim.api.nvim_create_autocmd("BufWritePre", {
-	group = vim.api.nvim_create_augroup("ensure-blank-line", { clear = true }),
-	pattern = "*",
-	callback = function()
-		-- 排除特殊文件类型
-		if vim.bo.buftype ~= "" or vim.bo.filetype == "help" then
-			return
-		end
-		local last_line = vim.fn.line("$")
-		local last_line_content = vim.fn.getline(last_line)
-		-- 如果最后一行不为空，添加一个空行
-		if last_line_content ~= "" then
-			vim.fn.append(last_line, "")
-		end
-	end,
-})
-
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+-- 	group = vim.api.nvim_create_augroup("ensure-blank-line", { clear = true }),
+-- 	pattern = "*",
+-- 	callback = function()
+-- 		if vim.bo.buftype ~= "" or vim.bo.filetype == "help" then
+-- 			return
+-- 		end
+-- 		local last_line = vim.fn.line("$")
+-- 		local last_line_content = vim.fn.getline(last_line)
+-- 		if last_line_content ~= "" then
+-- 			vim.fn.append(last_line, "")
+-- 		end
+-- 	end,
+-- })
