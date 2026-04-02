@@ -121,16 +121,9 @@ return {
 		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 		--  See `:help lsp-config` for information about keys and how to configure
 		local servers = {
-			-- clangd = {},
-			-- gopls = {},
-			-- pyright = {},
-			-- rust_analyzer = {},
-			--
-			-- Some languages (like typescript) have entire language plugins that can be useful:
-			--    https://github.com/pmizio/typescript-tools.nvim
-			--
-			-- But for many setups, the LSP (`ts_ls`) will work just fine
-			-- ts_ls = {},
+			rust_analyzer = {},
+			basedpyright = {},
+			ts_ls = {},
 		}
 
 		-- Ensure the servers and tools above are installed
@@ -140,13 +133,18 @@ return {
 		--    :Mason
 		--
 		-- You can press `g?` for help in this menu.
-		local ensure_installed = vim.tbl_keys(servers or {})
-		vim.list_extend(ensure_installed, {
+		-- NOTE: Don't use vim.tbl_keys(servers) here — Mason uses different names
+		--       (e.g. "rust-analyzer" not "rust_analyzer"). List them explicitly below.
+		local ensure_installed = {
 			"lua-language-server", -- Lua Language server
 			"stylua", -- Used to format Lua code
 			"markdownlint", -- Used to lint Markdown files
-			-- You can add other tools here that you want Mason to install
-		})
+			"rust-analyzer", -- Rust LSP (Mason name uses hyphen)
+			"basedpyright", -- Python LSP
+			"ruff", -- Python linter + formatter
+			"prettier", -- JS/TS/CSS formatter
+			"eslint_d", -- JS/TS linter
+		}
 
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

@@ -23,6 +23,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
+    'mfussenegger/nvim-dap-python',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -79,8 +80,9 @@ return {
       -- You'll need to check that you have the required things installed
       -- online, please don't ask me how to install them :)
       ensure_installed = {
-        -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        'delve', -- Go
+        'codelldb', -- Rust
+        'debugpy', -- Python
       },
     }
 
@@ -125,9 +127,35 @@ return {
     -- Install golang specific config
     require('dap-go').setup {
       delve = {
-        -- On Windows delve must be run attached or it crashes.
-        -- See https://github.com/leoluz/nvim-dap-go/blob/main/README.md#configuring
         detached = vim.fn.has 'win32' == 0,
+      },
+    }
+
+    -- Python debugger
+    require('dap-python').setup(
+      require('mason-registry').get_package('debugpy'):get_install_path() .. '/venv/bin/python'
+    )
+
+    -- Rust debugger via codelldb
+    local codelldb_path = require('mason-registry').get_package('codelldb'):get_install_path()
+    dap.adapters.codelldb = {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        command = codelldb_path .. '/codelldb',
+        args = { '--port', '${port}' },
+      },
+    }
+    dap.configurations.rust = {
+      {
+        name = 'Launch',
+        type = 'codelldb',
+        request = 'launch',
+        program = function()
+          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+        end,
+        cwd = '${workspaceFolder}',
+        stopOnEntry = false,
       },
     }
   end,

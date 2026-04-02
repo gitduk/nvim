@@ -79,3 +79,16 @@ vim.o.smartindent = true
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- Enable concealment for markdown rendering (e.g. [x] -> ✔)
+vim.o.conceallevel = 2
+
+-- Add fnm-managed node to PATH so Mason can find node/npm for installing tools
+local fnm = vim.fn.expand("~/.local/bin/fnm")
+if vim.fn.executable(fnm) == 1 then
+  local result = vim.fn.system(fnm .. " env --shell bash")
+  for path in result:gmatch('export PATH="([^"]+)"') do
+    vim.env.PATH = path .. ":" .. vim.env.PATH
+    break
+  end
+end

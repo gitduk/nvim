@@ -56,7 +56,12 @@ return {
       -- <c-k>: Toggle signature help
       --
       -- See :h blink-cmp-config-keymap for defining your own keymap
-      preset = 'default',
+      preset = 'none',
+      ['<C-j>'] = { 'select_next', 'fallback' },
+      ['<C-k>'] = { 'select_prev', 'fallback' },
+      ['<CR>'] = { 'accept', 'fallback' },
+      ['<C-e>'] = { 'hide', 'fallback' },
+      ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
 
       -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
       --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -75,7 +80,15 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets' },
+      default = { 'lsp', 'path', 'snippets', 'copilot' },
+      providers = {
+        copilot = {
+          name = 'copilot',
+          module = 'blink-copilot',
+          score_offset = 100, -- Show copilot suggestions at the top
+          async = true,
+        },
+      },
     },
 
     snippets = { preset = 'luasnip' },
