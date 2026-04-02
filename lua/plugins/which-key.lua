@@ -10,11 +10,16 @@ return {
 
       -- Document existing key chains
       spec = {
-        { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
+        { '<leader>s', group = '[S]earch',      mode = { 'n', 'v' } },
         { '<leader>t', group = '[T]oggle' },
-        { '<leader>u', group = '[U] Toggles' },
-        { '<leader>g', group = '[G] Git' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>u', group = '[U]I Toggles' },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>h', group = 'Git [H]unk',    mode = { 'n', 'v' } },
+        { '<leader>x', group = 'Trouble/[X]' },
+        { '<leader>b', group = '[B]reakpoint' },
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>r', group = '[R]eplace' },
+        { '<leader>d', group = '[D]ebug' },
       },
     },
   },

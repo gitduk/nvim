@@ -6,6 +6,8 @@ return {
     config = function()
       local lint = require 'lint'
       lint.linters_by_ft = {
+        -- Rust: clippy via rust-analyzer checkOnSave (configured in lspconfig)
+        -- nvim-lint is used for Python and JS/TS only
         python = { 'ruff' },
         javascript = { 'eslint_d' },
         typescript = { 'eslint_d' },

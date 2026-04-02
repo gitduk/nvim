@@ -87,8 +87,10 @@ vim.o.conceallevel = 2
 local fnm = vim.fn.expand("~/.local/bin/fnm")
 if vim.fn.executable(fnm) == 1 then
   local result = vim.fn.system(fnm .. " env --shell bash")
-  for path in result:gmatch('export PATH="([^"]+)"') do
-    vim.env.PATH = path .. ":" .. vim.env.PATH
-    break
+  if result and result ~= "" and result:find("PATH") then
+    for path in result:gmatch('export PATH="([^"]+)"') do
+      vim.env.PATH = path .. ":" .. vim.env.PATH
+      break
+    end
   end
 end

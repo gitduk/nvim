@@ -121,7 +121,7 @@ return {
 		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 		--  See `:help lsp-config` for information about keys and how to configure
 		local servers = {
-			rust_analyzer = {},
+			-- rust_analyzer is managed by rustaceanvim (lua/plugins/rust.lua)
 			basedpyright = {},
 			ts_ls = {},
 		}
