@@ -1,6 +1,18 @@
 -- [[ Basic Autocommands ]]
 
 local autocmd = vim.api.nvim_create_autocmd
+
+-- Markdown: use 2-space indentation
+autocmd("FileType", {
+	pattern = "markdown",
+	group = vim.api.nvim_create_augroup("markdown-indent", { clear = true }),
+	callback = function()
+		vim.opt_local.tabstop = 2
+		vim.opt_local.softtabstop = 2
+		vim.opt_local.shiftwidth = 2
+		vim.opt_local.expandtab = true
+	end,
+})
 --  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
@@ -39,7 +51,7 @@ autocmd("BufReadPost", {
 })
 
 -- Remove trailing whitespace on save (with higher priority to run before formatters)
-vim.api.nvim_create_autocmd("BufWritePre", {
+autocmd("BufWritePre", {
 	group = vim.api.nvim_create_augroup("trim-whitespace", { clear = true }),
 	pattern = "*",
 	callback = function()
@@ -52,19 +64,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		vim.fn.winrestview(save)
 	end,
 })
-
--- Ensure file ends with a blank line
--- vim.api.nvim_create_autocmd("BufWritePre", {
--- 	group = vim.api.nvim_create_augroup("ensure-blank-line", { clear = true }),
--- 	pattern = "*",
--- 	callback = function()
--- 		if vim.bo.buftype ~= "" or vim.bo.filetype == "help" then
--- 			return
--- 		end
--- 		local last_line = vim.fn.line("$")
--- 		local last_line_content = vim.fn.getline(last_line)
--- 		if last_line_content ~= "" then
--- 			vim.fn.append(last_line, "")
--- 		end
--- 	end,
--- })
