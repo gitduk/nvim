@@ -80,15 +80,15 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'copilot' },
-      providers = {
-        copilot = {
-          name = 'copilot',
-          module = 'blink-copilot',
-          score_offset = 100, -- Show copilot suggestions at the top
-          async = true,
-        },
-      },
+      default = { 'lsp', 'path', 'snippets' },
+      -- providers = {
+      --   copilot = {
+      --     name = 'copilot',
+      --     module = 'blink-copilot',
+      --     score_offset = 100, -- Show copilot suggestions at the top
+      --     async = true,
+      --   },
+      -- },
     },
 
     snippets = { preset = 'luasnip' },
