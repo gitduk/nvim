@@ -50,6 +50,11 @@ return {
 
     -- ... and there is more!
     --  Check out: https://github.com/nvim-mini/mini.nvim
-    require('mini.pairs').setup {}
+    require('mini.pairs').setup {
+      mappings = {
+        ["'"] = { action = 'open', pair = "''", neigh_pattern = '^[^%a\\]' },
+        ['"'] = { action = 'open', pair = '""', neigh_pattern = '^[^%a\\]' },
+      },
+    }
   end,
 }
