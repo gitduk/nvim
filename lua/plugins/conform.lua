@@ -1,42 +1,44 @@
 -- Autoformat
 return {
-  'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
-  cmd = { 'ConformInfo' },
+  "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  cmd = { "ConformInfo" },
   keys = {
     {
-      '<leader>f',
-      function() require('conform').format { async = true, lsp_format = 'fallback' } end,
-      mode = '',
-      desc = '[F]ormat buffer',
+      "<leader>ff",
+      function()
+        require("conform").format({ async = true, lsp_format = "fallback" })
+      end,
+      mode = "",
+      desc = "[F]ormat buffer",
     },
   },
   opts = {
     notify_on_error = false,
-    format_on_save = function(bufnr)
-      local disable_filetypes = { c = true, cpp = true }
-      if disable_filetypes[vim.bo[bufnr].filetype] then
-        return nil
-      else
-        -- Use longer timeout for Rust since rustfmt can be slow on large files
-        local timeout = vim.bo[bufnr].filetype == 'rust' and 2000 or 500
-        return {
-          timeout_ms = timeout,
-          lsp_format = 'fallback',
-        }
-      end
-    end,
+    -- format_on_save = function(bufnr)
+    --   local disable_filetypes = { c = true, cpp = true }
+    --   if disable_filetypes[vim.bo[bufnr].filetype] then
+    --     return nil
+    --   else
+    --     -- Use longer timeout for Rust since rustfmt can be slow on large files
+    --     local timeout = vim.bo[bufnr].filetype == "rust" and 2000 or 500
+    --     return {
+    --       timeout_ms = timeout,
+    --       lsp_format = "fallback",
+    --     }
+    --   end
+    -- end,
     formatters_by_ft = {
-      lua = { 'stylua' },
-      rust = { 'rustfmt' },
-      python = { 'ruff_format', 'ruff_organize_imports' },
-      javascript = { 'prettier' },
-      typescript = { 'prettier' },
-      javascriptreact = { 'prettier' },
-      typescriptreact = { 'prettier' },
-      json = { 'prettier' },
-      css = { 'prettier' },
-      html = { 'prettier' },
+      lua = { "stylua" },
+      rust = { "rustfmt" },
+      python = { "ruff_format", "ruff_organize_imports" },
+      javascript = { "prettier" },
+      typescript = { "prettier" },
+      javascriptreact = { "prettier" },
+      typescriptreact = { "prettier" },
+      json = { "prettier" },
+      css = { "prettier" },
+      html = { "prettier" },
     },
   },
 }

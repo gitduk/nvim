@@ -64,3 +64,30 @@ autocmd("BufWritePre", {
 		vim.fn.winrestview(save)
 	end,
 })
+
+-- Convert leading tabs to spaces on save; tabs inside strings are left alone
+autocmd("BufWritePre", {
+	group = vim.api.nvim_create_augroup("tabs-to-spaces", { clear = true }),
+	pattern = "*",
+	callback = function()
+		local ft = vim.bo.filetype
+		if ft == "make" or ft == "go" then
+			return
+		end
+		local ts = vim.bo.tabstop
+		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+		local changed = false
+		for i, line in ipairs(lines) do
+			local tabs = line:match("^\t+")
+			if tabs then
+				lines[i] = string.rep(" ", #tabs * ts) .. line:sub(#tabs + 1)
+				changed = true
+			end
+		end
+		if changed then
+			local view = vim.fn.winsaveview()
+			vim.api.nvim_buf_set_lines(0, 0, -1, false, lines)
+			vim.fn.winrestview(view)
+		end
+	end,
+})
