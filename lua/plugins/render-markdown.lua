@@ -8,6 +8,10 @@ return {
 	opts = {
 		-- Support Avante buffers in addition to markdown
 		file_types = { "markdown", "Avante" },
+		-- Render only in normal/command/terminal mode; insert mode shows the raw document
+		render_modes = { "n", "c", "t" },
+		-- Keep rendering on the cursor line instead of hiding virtual text there
+		anti_conceal = { enabled = false },
 		heading = { enabled = false },
 		checkbox = {
 			enabled = true,
