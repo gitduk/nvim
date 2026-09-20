@@ -13,6 +13,10 @@ return {
       styles = {
         comments = { italic = false }, -- Disable italics in comments
       },
+      -- Keep inline code blue but drop its background box
+      on_highlights = function(highlights, colors)
+        highlights['@markup.raw.markdown_inline'] = { fg = colors.blue }
+      end,
     }
 
     -- Load the colorscheme here.
